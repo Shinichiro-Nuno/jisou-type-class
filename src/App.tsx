@@ -5,18 +5,26 @@ import { Todo } from "./domain/todo";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const getAllTodos = async () => {
       const todosData = await GetAllTodos();
       setTodos(todosData);
+      setIsLoading(false);
     };
 
     getAllTodos();
   }, []);
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
-      <Table.Root size="sm">
+      <h1 data-testid="title">TODOリスト</h1>
+      <Table.Root size="sm" data-testid="table">
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>Title</Table.ColumnHeader>
